@@ -1,10 +1,8 @@
 <div align="center">
 
-<img src="figures/banner.png" alt="Your Model Has 98% Accuracy and Is Completely Useless" width="100%"/>
+<img src="figures/readme_banner.png" alt="The Accuracy Paradox" width="100%"/>
 
-# The Accuracy Paradox
-
-### A reproducible case study in why accuracy lies on imbalanced data, and what actually tells the truth
+<br/>
 
 [![Read on Medium](https://img.shields.io/badge/Read_the_article-Medium-black?style=for-the-badge&logo=medium)](#)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
@@ -15,16 +13,28 @@
 
 <br/>
 
+<div align="center">
+
 > **A model that's right 98 times out of 100 sounds like the best model in the room. It isn't.**
 > It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first.
 
-<br/>
+</div>
+
+<br/><br/>
 
 ## Why this exists
 
 Class imbalance is the default condition of most real classification problems: rare disease detection, fraud, manufacturing defects, network intrusions, churn. Accuracy, the metric almost everyone reaches for first, actively lies in exactly these settings. It doesn't just underperform, it rewards the laziest possible model with the highest possible score.
 
 This repository is the full, reproducible proof of that claim. A synthetic 98%/2% imbalanced dataset, a baseline model that looks great and does nothing, the confusion matrix that exposes it, and three standard fixes tested honestly enough that one of them makes things worse. Every number in the article traces back to the notebook in this repo. Nothing here is illustrative or hand-picked.
+
+<br/>
+
+<div align="center">
+
+· · ·
+
+</div>
 
 <br/>
 
@@ -40,11 +50,11 @@ This repository is the full, reproducible proof of that claim. A synthetic 98%/2
 | Class weighted | 0.9776 | 1.0000 | 0.1111 | 0.2000 |
 | SMOTE | 0.9812 | 0.7286 | 0.4048 | 0.5204 |
 
-*Table: every method scores between 97.5% and 98.4% accuracy. Recall and F1 tell a completely different story, and that gap is the entire point of this project.*
+*Every method scores between 97.5% and 98.4% accuracy. Recall and F1 tell a completely different story, and that gap is the entire point of this project.*
 
 </div>
 
-<br/>
+<br/><br/>
 
 ## Repository structure
 
@@ -60,7 +70,8 @@ accuracy-paradox-demo/
 │   └── imbalance_analysis.ipynb    End-to-end, runnable top to bottom: data → models → every figure
 │
 └── figures/
-    ├── banner.png                  Cover image
+    ├── readme_banner.png                   This page's header image
+    ├── banner.png                          Cover image used in article.md and on Medium
     ├── fig1_accuracy_vs_recall.png         Accuracy vs. recall, baseline vs. do-nothing model
     ├── fig2_confusion_baseline.png         Confusion matrix, baseline model
     ├── fig3_pr_curve_baseline.png          Precision-recall curve, baseline model
@@ -77,6 +88,14 @@ accuracy-paradox-demo/
 
 <br/>
 
+<div align="center">
+
+· · ·
+
+</div>
+
+<br/>
+
 ## What's inside the dataset
 
 A synthetic, fully reproducible stand-in for a medical-imaging screening problem, built with `sklearn.datasets.make_classification`:
@@ -89,7 +108,7 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 | Label noise | 1% (`flip_y=0.01`, kept realistic rather than a clean toy split) |
 | Seed | 42, fixed everywhere for exact reproducibility |
 
-<br/>
+<br/><br/>
 
 ## The three fixes, tested honestly
 
@@ -99,7 +118,15 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 | **SMOTE** | Synthetically oversamples the minority class in the training fold only | Recall roughly doubled, at the cost of more false alarms |
 | **Threshold tuning** | Moves the decision boundary off the default 0.5 to maximize F1 | The cheapest fix, and the one that won outright on this run |
 
-No result here is presented as the "correct" outcome to expect on every dataset. The point of showing all three, with the full precision-recall curves and confusion matrices behind them, is that the standard advice ("just use `class_weight='balanced'`") is not guaranteed to help. It has to be checked, not assumed, and this repo shows exactly how to check it.
+No result here is presented as the correct outcome to expect on every dataset. The point of showing all three, with the full precision-recall curves and confusion matrices behind them, is that the standard advice ("just use `class_weight='balanced'`") is not guaranteed to help. It has to be checked, not assumed, and this repo shows exactly how to check it.
+
+<br/>
+
+<div align="center">
+
+· · ·
+
+</div>
 
 <br/>
 
@@ -121,15 +148,23 @@ Run the notebook top to bottom. Every figure in `figures/` regenerates from scra
 
 Want to test it on your own data instead of the synthetic set? Replace the `make_classification(...)` cell near the top with your own `X, y`. Everything downstream, the models, the metrics, every figure, adapts automatically to any binary classification problem.
 
-<br/>
+<br/><br/>
 
 ## Read the full write-up
 
-The complete article, including the math behind why accuracy fails, the full walkthrough of the confusion matrix, and the checklist for auditing any reported accuracy number, lives in [`article.md`](article.md) in this repo, and is also published on Medium:
+The complete article, including the math behind why accuracy fails, the full walkthrough of the confusion matrix, and the checklist for auditing any reported accuracy number, lives in [`article.md`](article.md) in this repo, and is also published on Medium.
 
 <div align="center">
 
 **[Read "Your Model Has 98% Accuracy and Is Completely Useless" on Medium →](#)**
+
+</div>
+
+<br/>
+
+<div align="center">
+
+· · ·
 
 </div>
 
@@ -145,13 +180,41 @@ This case study is a direct extension of imbalance problems that show up constan
 
 Released under the [MIT License](LICENSE). Use the code freely. If you reference the article or its findings, an attribution back to this repository or the Medium piece is appreciated.
 
+<br/><br/>
+
+---
+
 <br/>
 
 <div align="center">
 
-**Zain Ul Abideen**
-Applied ML / Computer Vision · [GitHub](https://github.com/zain-ul-abideen-5036) · [LinkedIn](https://linkedin.com/in/zain-ul-abideen3)
+## About the Author
 
-*If this repo helped you catch a false 98%, a star is the best kind of feedback.*
+<img src="https://img.shields.io/badge/Applied_ML-Computer_Vision-1a1a2e?style=flat-square" />
+<img src="https://img.shields.io/badge/Focus-Deep_Learning-1a1a2e?style=flat-square" />
+<img src="https://img.shields.io/badge/Microsoft_Learn-Student_Ambassador_(Gold)-1a1a2e?style=flat-square" />
+
+<br/><br/>
+
+### Zain Ul Abideen
+
+</div>
+
+I work at the intersection of applied machine learning and computer vision, mostly living in the space between a model that runs and a model that can be trusted. That usually means chasing down the quiet failure modes that a headline metric hides: data leakage, mismatched validation splits, and, as this repository shows, accuracy scores that look great and mean nothing.
+
+I graduated in Computer Science from the University of Central Punjab, Lahore, with a minor in AI, ML, and Deep Learning, and I currently work as a Lead AI/ML Instructor while holding a Senior Microsoft Learn Student Ambassador (Gold) role. Alongside that, I take on applied ML engineering work for external clients and collaborate on graduate-level research, most recently redesigning the validation methodology and statistical testing for an MSc dissertation on deep transfer learning.
+
+This repository is part of a broader, ongoing body of public research work: reproducible case studies, each one built to be run, questioned, and verified rather than taken on faith. Every piece follows the same rule this one does: if the honest result is a fix that underperforms or a number that doesn't move the way it's supposed to, that stays in, because that's usually the more useful finding.
+
+<br/>
+
+<div align="center">
+
+[![GitHub](https://img.shields.io/badge/GitHub-zain--ul--abideen--5036-181717?style=for-the-badge&logo=github)](https://github.com/zain-ul-abideen-5036)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-zain--ul--abideen3-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/zain-ul-abideen3)
+
+<br/>
+
+*If this repository helped you catch a false 98%, a star is the best kind of feedback.*
 
 </div>
