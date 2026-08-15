@@ -32,7 +32,8 @@ This repository is the full, reproducible proof of that claim. A synthetic 98%/2
 
 <div align="center">
 
-· · ·
+---
+
 
 </div>
 
@@ -58,7 +59,8 @@ This repository is the full, reproducible proof of that claim. A synthetic 98%/2
 
 ## Repository structure
 
-```
+---
+
 accuracy-paradox-demo/
 │
 ├── article.md                      Full write-up: math, code, findings, checklist
@@ -90,7 +92,8 @@ accuracy-paradox-demo/
 
 <div align="center">
 
-· · ·
+---
+
 
 </div>
 
@@ -124,7 +127,8 @@ No result here is presented as the correct outcome to expect on every dataset. T
 
 <div align="center">
 
-· · ·
+---
+
 
 </div>
 
@@ -164,7 +168,8 @@ The complete article, including the math behind why accuracy fails, the full wal
 
 <div align="center">
 
-· · ·
+---
+
 
 </div>
 
