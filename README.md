@@ -28,13 +28,7 @@ Class imbalance is the default condition of most real classification problems: r
 
 This repository is the full, reproducible proof of that claim. A synthetic 98%/2% imbalanced dataset, a baseline model that looks great and does nothing, the confusion matrix that exposes it, and three standard fixes tested honestly enough that one of them makes things worse. Every number in the article traces back to the notebook in this repo. Nothing here is illustrative or hand-picked.
 
-<br/>
-
-<div align="center">
-
-· · ·
-
-</div>
+---
 
 <br/>
 
@@ -86,13 +80,7 @@ accuracy-paradox-demo/
         └── eq_f1.png
 ```
 
-<br/>
-
-<div align="center">
-
-· · ·
-
-</div>
+---
 
 <br/>
 
@@ -120,13 +108,8 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 
 No result here is presented as the correct outcome to expect on every dataset. The point of showing all three, with the full precision-recall curves and confusion matrices behind them, is that the standard advice ("just use `class_weight='balanced'`") is not guaranteed to help. It has to be checked, not assumed, and this repo shows exactly how to check it.
 
-<br/>
+---
 
-<div align="center">
-
-· · ·
-
-</div>
 
 <br/>
 
@@ -160,13 +143,8 @@ The complete article, including the math behind why accuracy fails, the full wal
 
 </div>
 
-<br/>
+---
 
-<div align="center">
-
-· · ·
-
-</div>
 
 <br/>
 
