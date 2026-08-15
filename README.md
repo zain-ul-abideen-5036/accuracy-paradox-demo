@@ -1,583 +1,220 @@
-# Imbalance-Aware Credit Card Fraud Detection
-
-<p align="center">
-  <strong>LEAKAGE-SAFE • IMBALANCE-AWARE • EXPLAINABLE</strong><br/>
-  <sub>A reproducible machine-learning study of credit-card fraud detection under extreme class imbalance.</sub>
-</p>
+<div align="center">
 
-<p align="center">
-  <em>From a 1:577 class imbalance to a defensible evaluation protocol.</em>
-</p>
+<img src="figures/readme_banner.png" alt="The Accuracy Paradox" width="100%"/>
 
-<p align="center">
+<br/>
 
-![Python](https://img.shields.io/badge/Python-3.13+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-1.9+-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
-![imbalanced-learn](https://img.shields.io/badge/imbalanced--learn-SMOTE-6A5ACD?style=for-the-badge)
-![XGBoost](https://img.shields.io/badge/XGBoost-Tree%20Boosting-0F9D58?style=for-the-badge)
-![SHAP](https://img.shields.io/badge/Explainability-SHAP-FF6B35?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-black?style=for-the-badge)
+[![Read on Medium](https://img.shields.io/badge/Read_the_article-Medium-black?style=for-the-badge&logo=medium)](#)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-</p>
+</div>
 
-> **Research note** — This repository treats class imbalance as a methodological problem, not merely a preprocessing step. The core principle is simple: **the held-out test set must never influence the solution to the imbalance problem.**
+<br/>
 
-## At a glance
+<div align="center">
 
-| | |
-|---|---|
-| **Problem** | Credit-card fraud detection under extreme class imbalance |
-| **Benchmark** | ULB Credit Card Fraud Detection |
-| **Models** | Logistic Regression · Random Forest · XGBoost |
-| **Imbalance strategy** | SMOTE, applied only to training data |
-| **Explainability** | SHAP TreeExplainer |
-| **Best held-out model** | **Random Forest** |
-| **Best F1-score** | **0.8763** |
-| **Best ROC-AUC** | **0.9791** |
+> **A model that's right 98 times out of 100 sounds like the best model in the room. It isn't.**
+> It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first.
 
-## Navigation
+</div>
 
-- [Overview](#overview)
-- [Why this repository exists](#why-this-repository-exists)
-- [Dataset](#dataset)
-- [Methodology](#methodology)
-- [Class imbalance](#class-imbalance)
-- [Models](#models)
-- [Evaluation](#evaluation)
-- [Results](#results)
-- [Explainability](#explainability)
-- [Figures](#figures)
-- [Repository structure](#repository-structure)
-- [Reproducing the experiment](#reproducing-the-experiment)
-- [Research context & author](#research-context--author)
-- [Technical article](#technical-article)
-- [Citation](#citation)
-- [License](#license)
-
----
-
-## Overview
-
-Credit-card fraud detection is not a conventional accuracy-maximisation problem.
-
-In the ULB Credit Card Fraud Detection benchmark, only a tiny fraction of transactions are fraudulent. A classifier can therefore achieve deceptively high accuracy while failing to identify the minority class that actually matters.
-
-This project studies that problem through a reproducible pipeline built around:
-
-- leakage-safe train/test separation;
-- train-only feature scaling;
-- **SMOTE applied only after the split**;
-- Logistic Regression as a balanced linear baseline;
-- Random Forest as an ensemble benchmark;
-- XGBoost with leakage-safe cross-validation and randomized hyperparameter search;
-- ROC-AUC, precision, recall and F1-score;
-- SHAP-based model interpretation;
-- publication-ready figures and an accompanying technical article.
+<br/><br/>
 
-The strongest held-out model was **Random Forest**, achieving:
+## Why this exists
 
-| Model | AUC-ROC | F1 | Precision | Recall |
-|---|---:|---:|---:|---:|
-| Logistic Regression | 0.9619 | 0.7431 | 0.6812 | 0.8163 |
-| XGBoost | 0.9703 | 0.8216 | 0.8444 | 0.8000 |
-| **Random Forest** | **0.9791** | **0.8763** | **0.8912** | **0.8618** |
+Class imbalance is the default condition of most real classification problems: rare disease detection, fraud, manufacturing defects, network intrusions, churn. Accuracy, the metric almost everyone reaches for first, actively lies in exactly these settings. It doesn't just underperform, it rewards the laziest possible model with the highest possible score.
 
-The evaluation set contains **56,962 transactions**, including 98 fraudulent transactions.
+This repository is the full, reproducible proof of that claim. A synthetic 98%/2% imbalanced dataset, a baseline model that looks great and does nothing, the confusion matrix that exposes it, and three standard fixes tested honestly enough that one of them makes things worse. Every number in the article traces back to the notebook in this repo. Nothing here is illustrative or hand-picked.
 
----
+<br/>
 
-## Why this repository exists
+<div align="center">
 
-The interesting part of fraud detection is not simply training a classifier.
+· · ·
 
-It is answering:
+</div>
 
-1. **Can the minority class be learned without leaking information from the test set?**
-2. **Does oversampling actually improve minority-class performance?**
-3. **Does a nonlinear ensemble outperform a linear baseline?**
-4. **Which transaction features drive the final predictions?**
-5. **Are the reported metrics trustworthy enough to reproduce?**
+<br/>
 
-The repository is therefore organised around the experiment rather than around a generic machine-learning template.
+## The finding, in one table
 
----
+<div align="center">
 
-## Dataset
+| Method | Accuracy | Precision | Recall | F1 |
+|:--|:--:|:--:|:--:|:--:|
+| Predict majority always | 0.9748 | 0.0000 | 0.0000 | 0.0000 |
+| Baseline (unweighted Random Forest) | 0.9804 | 0.9667 | 0.2302 | 0.3718 |
+| **Threshold tuned** | 0.9842 | 0.7474 | 0.5635 | **0.6425** |
+| Class weighted | 0.9776 | 1.0000 | 0.1111 | 0.2000 |
+| SMOTE | 0.9812 | 0.7286 | 0.4048 | 0.5204 |
 
-The experiments use the public **ULB Credit Card Fraud Detection** benchmark.
+*Every method scores between 97.5% and 98.4% accuracy. Recall and F1 tell a completely different story, and that gap is the entire point of this project.*
 
-### Dataset profile
+</div>
 
-| Property | Value |
-|---|---:|
-| Total transactions | 284,807 |
-| Fraudulent transactions | 492 |
-| Legitimate transactions | 284,315 |
-| Fraud prevalence | ~0.172% |
-| Approximate imbalance | 1 : 577 |
-| Input features | 30 |
-| Test partition | 56,962 |
-
-The dataset contains anonymised PCA-derived variables `V1`–`V28`, together with `Time`, `Amount`, and the binary `Class` target.
-
-> **Data note:** The raw dataset is not redistributed in this repository. Obtain it from the original public source and place it locally according to the project configuration.
-
----
-
-## Methodology
-
-The experiment follows a strict ordering:
-
-```text
-Raw transactions
-       │
-       ▼
-Duplicate removal
-       │
-       ▼
-Stratified train/test split
-       │
-       ├──────────────► Held-out test set
-       │                    │
-       │                    └── untouched until final evaluation
-       ▼
-Train-only scaling
-       │
-       ▼
-SMOTE on training data only
-       │
-       ├──────────────► Logistic Regression
-       ├──────────────► Random Forest
-       └──────────────► XGBoost + leakage-safe CV
-                              │
-                              ▼
-                       Final evaluation
-                              │
-                              ▼
-                    SHAP interpretation
-```
-
-### The critical rule
-
-**SMOTE is never applied before the train/test split.**
-
-Applying SMOTE to the full dataset first allows synthetic training examples to be influenced by information derived from observations that later appear in the test set. That makes the final evaluation optimistic.
-
----
-
-## Class imbalance
-
-The original fraud prevalence is approximately 0.172%.
-
-The imbalance ratio can be expressed as:
-
-$$
-R = \frac{N_{\text{legitimate}}}{N_{\text{fraud}}}
-$$
-
-For this benchmark:
-
-$$
-R \approx \frac{284315}{492} \approx 577:1
-$$
-
-This means that a model that predicts the majority class almost everywhere can still appear highly accurate.
-
-That is why this project prioritises **F1-score, precision, recall and ROC-AUC** rather than accuracy alone.
-
-### SMOTE
-
-For a minority sample \(x_i\), SMOTE creates a synthetic point by interpolating between \(x_i\) and one of its minority-class neighbours \(x_{nn}\):
-
-$$
-x_{\text{new}} = x_i + \lambda(x_{nn}-x_i),
-\qquad \lambda \sim U(0,1)
-$$
-
-In this experiment, SMOTE is applied exclusively to the training partition.
-
-The resulting training partition contains:
-
-- 227,451 legitimate examples;
-- 227,451 minority-class examples.
-
-The held-out test set remains untouched.
-
----
-
-## Models
-
-### Logistic Regression
-
-A balanced Logistic Regression model provides the linear reference point:
-
-$$
-P(y=1\mid x)=\sigma(w^Tx+b)
-$$
-
-where
-
-$$
-\sigma(z)=\frac{1}{1+e^{-z}}
-$$
-
-`class_weight="balanced"` is used so that the minority class is not ignored during optimisation.
-
-### Random Forest
-
-Random Forest combines multiple decision trees and aggregates their predictions:
-
-$$
-\hat{y}=\operatorname{mode}\{T_1(x),T_2(x),\ldots,T_B(x)\}
-$$
-
-The evaluated configuration used 200 estimators, maximum depth 10, and balanced class weighting.
-
-### XGBoost
-
-XGBoost constructs an additive ensemble:
-
-$$
-\hat{y}_i = \sum_{k=1}^{K} f_k(x_i)
-$$
-
-with the regularised objective:
-
-$$
-\mathcal{L} =
-\sum_i l(y_i,\hat{y}_i)
-+
-\sum_k \Omega(f_k)
-$$
-
-The search used 100 randomized configurations with SMOTE placed **inside each cross-validation fold**, preventing synthetic observations from crossing fold boundaries.
-
----
-
-## Evaluation
-
-For binary classification:
-
-### Precision
-
-$$
-\text{Precision}=\frac{TP}{TP+FP}
-$$
-
-### Recall
-
-$$
-\text{Recall}=\frac{TP}{TP+FN}
-$$
-
-### F1-score
-
-$$
-F_1 =
-2\cdot
-\frac{\text{Precision}\cdot\text{Recall}}
-{\text{Precision}+\text{Recall}}
-$$
-
-### ROC-AUC
-
-The ROC curve evaluates the relationship between the true-positive rate and false-positive rate over possible classification thresholds:
-
-$$
-TPR=\frac{TP}{TP+FN}
-$$
-
-$$
-FPR=\frac{FP}{FP+TN}
-$$
-
-AUC summarises the area under this curve.
-
----
-
-## Results
-
-### Held-out performance
-
-| Model | AUC-ROC | F1 | Precision | Recall |
-|---|---:|---:|---:|---:|
-| Logistic Regression | 0.9619 | 0.7431 | 0.6812 | 0.8163 |
-| XGBoost | 0.9703 | 0.8216 | 0.8444 | 0.8000 |
-| **Random Forest** | **0.9791** | **0.8763** | **0.8912** | **0.8618** |
-
-Random Forest produced the strongest overall F1-score and the best balance between false positives and false negatives on the held-out set.
-
----
-
-## Explainability
-
-The selected Random Forest model was interpreted using SHAP TreeExplainer.
-
-For a prediction \(f(x)\), SHAP decomposes the output into a base value and feature contributions:
-
-$$
-f(x)=\phi_0+\sum_{i=1}^{M}\phi_i
-$$
-
-where:
-
-- \(\phi_0\) is the base value;
-- \(M=30\) is the number of model features;
-- \(\phi_i\) represents the contribution of feature \(i\).
-
-The strongest global predictors identified in the analysis include:
-
-`V14`, `V4`, `V12`, `V17`, and `V10`.
-
----
-
-## Figures
-
-All publication figures are stored under `figures/` and are referenced directly by the article.
-
-### Figure 1 — Class distribution
-
-![Figure 1 — Class distribution](figures/fig1_class_distribution.png)
-
-*Figure 1. Distribution of legitimate and fraudulent transactions in the original benchmark, illustrating the extreme minority-class imbalance.*
-
-### Figure 2 — Feature correlation structure
-
-![Figure 2 — Correlation heatmap](figures/fig2_correlation_heatmap.png)
-
-*Figure 2. Feature correlation heatmaps for legitimate and fraudulent transactions.*
-
-### Figure 3 — Feature distributions
-
-![Figure 3 — Feature distributions](figures/fig3_feature_distributions.png)
-
-*Figure 3. Distribution of selected high-impact features for legitimate and fraudulent transactions.*
-
-### Figure 4 — SMOTE balancing
-
-![Figure 4 — SMOTE balancing](figures/fig4_smote_balancing.png)
-
-*Figure 4. Training-set class distribution before and after applying SMOTE exclusively to the training partition.*
-
-### Figure 5 — ROC curves and confusion matrices
-
-![Figure 5 — ROC and confusion matrices](figures/fig5_roc_confusion.png)
-
-*Figure 5. ROC curves and confusion matrices for the evaluated classifiers on the untouched held-out test set.*
-
-### Figure 6 — Metric comparison
-
-![Figure 6 — Metric comparison](figures/fig6_metrics_comparison.png)
-
-*Figure 6. Comparative AUC-ROC, F1-score, precision and recall across the three classifiers.*
-
-### Figure 7 — SHAP summary
-
-![Figure 7 — SHAP summary](figures/fig7_shap_summary.png)
-
-*Figure 7. Global SHAP summary showing the magnitude and direction of feature contributions.*
-
-### Figure 8 — SHAP waterfall
-
-![Figure 8 — SHAP waterfall](figures/fig8_shap_waterfall.png)
-
-*Figure 8. Local SHAP waterfall explanation for an individual transaction.*
-
-### Figure 9 — SHAP feature importance
-
-![Figure 9 — SHAP importance](figures/fig9_shap_importance.png)
-
-*Figure 9. Global feature importance derived from absolute SHAP contributions.*
-
-### Figure 10 — End-to-end pipeline
-
-![Figure 10 — Pipeline architecture](figures/fig10_pipeline_architecture.png)
-
-*Figure 10. End-to-end experimental pipeline from raw transactions through leakage-safe preprocessing, modelling, evaluation and explainability.*
-
----
+<br/><br/>
 
 ## Repository structure
 
-```text
-imbalance-article-project/
+```
+accuracy-paradox-demo/
 │
-├── README.md
-├── LICENSE
-├── article.md
-├── requirements.txt
+├── article.md                      Full write-up: math, code, findings, checklist
+├── README.md                       You are here
+├── LICENSE                         MIT
+├── requirements.txt                Exact dependencies to reproduce every result
 │
-├── figures/
-│   ├── fig1_class_distribution.png
-│   ├── fig2_correlation_heatmap.png
-│   ├── fig3_feature_distributions.png
-│   ├── fig4_smote_balancing.png
-│   ├── fig5_roc_confusion.png
-│   ├── fig6_metrics_comparison.png
-│   ├── fig7_shap_summary.png
-│   ├── fig8_shap_waterfall.png
-│   ├── fig9_shap_importance.png
-│   └── fig10_pipeline_architecture.png
+├── notebook/
+│   └── imbalance_analysis.ipynb    End-to-end, runnable top to bottom: data → models → every figure
 │
-└── src/
-    └── imbalance_analysis.py
+└── figures/
+    ├── readme_banner.png                   This page's header image
+    ├── banner.png                          Cover image used in article.md and on Medium
+    ├── fig1_accuracy_vs_recall.png         Accuracy vs. recall, baseline vs. do-nothing model
+    ├── fig2_confusion_baseline.png         Confusion matrix, baseline model
+    ├── fig3_pr_curve_baseline.png          Precision-recall curve, baseline model
+    ├── fig4_pr_curve_comparison.png        Precision-recall curves, all fixes compared
+    ├── fig5_confusion_weighted.png         Confusion matrix, class-weighted model
+    ├── fig6_full_comparison.png            All five methods, every metric, side by side
+    ├── table_results_summary.png           Results table, styled for visual publishing
+    └── equations/
+        ├── eq_accuracy.png
+        ├── eq_recall.png
+        ├── eq_precision.png
+        └── eq_f1.png
 ```
 
-> The figure filenames above match the analysis notebooks/source material available for this project. If your GitHub repository contains additional scripts or generated artefacts, keep those files in their existing locations rather than renaming them solely for documentation.
+<br/>
 
----
+<div align="center">
 
-## Reproducing the experiment
+· · ·
 
-### 1. Clone
+</div>
+
+<br/>
+
+## What's inside the dataset
+
+A synthetic, fully reproducible stand-in for a medical-imaging screening problem, built with `sklearn.datasets.make_classification`:
+
+| Property | Value |
+|:--|:--|
+| Samples | 20,000 |
+| Features | 20 (8 informative, 4 redundant) |
+| Class split | 98% normal, 2% disease |
+| Label noise | 1% (`flip_y=0.01`, kept realistic rather than a clean toy split) |
+| Seed | 42, fixed everywhere for exact reproducibility |
+
+<br/><br/>
+
+## The three fixes, tested honestly
+
+| Fix | What it does | What actually happened here |
+|:--|:--|:--|
+| **Class weighting** | Penalizes minority-class errors more during training, one keyword argument | Recall *dropped* on this model and dataset, a real and known failure mode with bagged tree ensembles, not a universal result |
+| **SMOTE** | Synthetically oversamples the minority class in the training fold only | Recall roughly doubled, at the cost of more false alarms |
+| **Threshold tuning** | Moves the decision boundary off the default 0.5 to maximize F1 | The cheapest fix, and the one that won outright on this run |
+
+No result here is presented as the correct outcome to expect on every dataset. The point of showing all three, with the full precision-recall curves and confusion matrices behind them, is that the standard advice ("just use `class_weight='balanced'`") is not guaranteed to help. It has to be checked, not assumed, and this repo shows exactly how to check it.
+
+<br/>
+
+<div align="center">
+
+· · ·
+
+</div>
+
+<br/>
+
+## Reproduce it
 
 ```bash
-git clone https://github.com/<your-username>/imbalance-article-project.git
-cd imbalance-article-project
-```
+git clone https://github.com/zain-ul-abideen-5036/accuracy-paradox-demo.git
+cd accuracy-paradox-demo
 
-### 2. Create a virtual environment
-
-Windows:
-
-```bash
 python -m venv venv
-venv\Scripts\activate
-```
+source venv/bin/activate        # Windows: venv\Scripts\Activate.ps1
 
-macOS/Linux:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-python -m pip install --upgrade pip
 pip install -r requirements.txt
+
+jupyter notebook notebook/imbalance_analysis.ipynb
 ```
 
-### 4. Add the dataset
+Run the notebook top to bottom. Every figure in `figures/` regenerates from scratch, and the printed metrics table will match the one above exactly, since every random process in the pipeline is seeded.
 
-Download the ULB Credit Card Fraud Detection dataset from its original public source and configure the path expected by the analysis script.
+Want to test it on your own data instead of the synthetic set? Replace the `make_classification(...)` cell near the top with your own `X, y`. Everything downstream, the models, the metrics, every figure, adapts automatically to any binary classification problem.
 
-Do **not** commit the raw dataset if your repository policy or dataset licence does not permit redistribution.
+<br/><br/>
 
-### 5. Run the analysis
+## Read the full write-up
 
-```bash
-python src/imbalance_analysis.py
-```
+The complete article, including the math behind why accuracy fails, the full walkthrough of the confusion matrix, and the checklist for auditing any reported accuracy number, lives in [`article.md`](article.md) in this repo, and is also published on Medium.
 
-The script generates the analysis outputs and publication figures used throughout the repository.
+<div align="center">
 
----
+**[Read "Your Model Has 98% Accuracy and Is Completely Useless" on Medium →](#)**
 
-## Reproducibility principles
+</div>
 
-This project follows several rules designed to keep the reported metrics defensible:
+<br/>
 
-- split before oversampling;
-- fit transformations only on training data;
-- keep the held-out test set untouched;
-- apply SMOTE within CV folds during XGBoost tuning;
-- report multiple imbalance-aware metrics;
-- preserve a fixed random seed where applicable;
-- keep generated figures separate from source code;
-- document the exact evaluation partition.
+<div align="center">
 
----
+· · ·
 
-## Research context & author
+</div>
 
-<p align="center">
-  <strong>Zain Ul Abideen</strong><br/>
-  <sub>Computer Science • Applied Machine Learning • AI Research • Explainable AI</sub>
-</p>
+<br/>
 
-This repository is authored by **Zain Ul Abideen**, a Computer Science graduate focused on turning machine-learning ideas into reproducible, research-oriented systems. His work spans **applied ML, AI, computer vision, explainability, and research engineering**, with an emphasis on building projects that can be inspected, reproduced, and extended rather than treated as isolated experiments.
+## Why this matters beyond this one dataset
 
-### Research & technical interests
+This case study is a direct extension of imbalance problems that show up constantly in real diagnostic imaging work: CT-based classification where the disease-positive class is a small minority of scans, and where a model that quietly ignores that minority can still report a deceptively strong headline accuracy. The habit this repo argues for, confusion matrix first, accuracy last, is the same discipline behind catching subject-level data leakage and validation-pipeline leaks before they inflate a reported result anywhere else.
 
-- **Applied Machine Learning** — practical modelling, evaluation, and experimentation.
-- **Artificial Intelligence** — learning systems, model development, and responsible evaluation.
-- **Computer Vision** — deep learning, visual recognition, and explainable AI workflows.
-- **Explainable AI** — understanding model behaviour through techniques such as SHAP and Grad-CAM.
-- **Research Engineering** — connecting rigorous methodology with clean, reproducible implementation.
-- **Deno Lab** — the broader project/research context associated with this body of work.
-- **Open Research on GitHub** — documenting code, experiments, figures, and findings in a form that others can inspect and build upon.
-
-### Author profile
-
-| | |
-|---|---|
-| **Author** | Zain Ul Abideen |
-| **Background** | Computer Science |
-| **Focus** | Applied ML · AI · Computer Vision · Explainable AI |
-| **Research style** | Reproducible · Experimental · Methodology-first |
-| **Primary platform** | GitHub |
-| **Project context** | Deno Lab |
-
-> **Build the model. Challenge the evaluation. Explain the result. Share the work.**
-
-This repository follows that philosophy: the model is only one part of the contribution. The data boundary, preprocessing order, imbalance strategy, evaluation protocol, visual evidence, and explanations are documented alongside it.
-
----
-
-## Technical article
-
-A companion long-form article explains the experiment, the class-imbalance problem, leakage risks, model comparison, equations, visual results and lessons learned.
-
-**Medium article:**  
-`[PASTE YOUR LIVE MEDIUM ARTICLE LINK HERE]`
-
-Replace the placeholder above with the final published Medium URL.
-
----
-
-## Key takeaways
-
-> **1. Accuracy is not enough.**  
-> With a ~577:1 class imbalance, majority-class predictions can look impressive while being operationally useless.
-
-> **2. Resampling must respect the evaluation boundary.**  
-> SMOTE belongs inside the training workflow — never before the train/test split.
-
-> **3. Nonlinear ensembles captured the problem better.**  
-> Random Forest produced the strongest held-out F1-score in this experiment.
-
-> **4. Evaluation and explanation are separate questions.**  
-> A strong classifier still needs an interpretable account of why individual predictions were made.
-
-> **5. Reproducibility is part of the result.**  
-> A metric is only meaningful when the data split, preprocessing order and evaluation protocol are clearly defined.
-
----
-
-## Citation
-
-If you use this repository in academic work, please cite the repository and the accompanying article.
-
-```bibtex
-@misc{ulabideen_imbalance_fraud_2026,
-  author       = {Zain Ul Abideen},
-  title        = {Imbalance-Aware Credit Card Fraud Detection},
-  year         = {2026},
-  howpublished = {GitHub},
-  note         = {Leakage-safe machine learning study using SMOTE, Random Forest, XGBoost, Logistic Regression and SHAP}
-}
-```
-
----
+<br/>
 
 ## License
 
-Released under the **MIT License**. See [`LICENSE`](LICENSE).
+Released under the [MIT License](LICENSE). Use the code freely. If you reference the article or its findings, an attribution back to this repository or the Medium piece is appreciated.
+
+<br/><br/>
 
 ---
 
-<p align="center">
-  <sub>Built as a reproducible machine-learning study — where the evaluation protocol matters as much as the model.</sub>
-</p>
+<br/>
+
+<div align="center">
+
+## About the Author
+
+<img src="https://img.shields.io/badge/Applied_ML-Computer_Vision-1a1a2e?style=flat-square" />
+<img src="https://img.shields.io/badge/Focus-Deep_Learning-1a1a2e?style=flat-square" />
+<img src="https://img.shields.io/badge/Microsoft_Learn-Student_Ambassador_(Gold)-1a1a2e?style=flat-square" />
+
+<br/><br/>
+
+### Zain Ul Abideen
+
+</div>
+
+I work at the intersection of applied machine learning and computer vision, mostly living in the space between a model that runs and a model that can be trusted. That usually means chasing down the quiet failure modes that a headline metric hides: data leakage, mismatched validation splits, and, as this repository shows, accuracy scores that look great and mean nothing.
+
+I graduated in Computer Science from the University of Central Punjab, Lahore, with a minor in AI, ML, and Deep Learning, and I currently work as a Lead AI/ML Instructor while holding a Senior Microsoft Learn Student Ambassador (Gold) role. Alongside that, I take on applied ML engineering work for external clients and collaborate on graduate-level research, most recently redesigning the validation methodology and statistical testing for an MSc dissertation on deep transfer learning.
+
+This repository is part of a broader, ongoing body of public research work: reproducible case studies, each one built to be run, questioned, and verified rather than taken on faith. Every piece follows the same rule this one does: if the honest result is a fix that underperforms or a number that doesn't move the way it's supposed to, that stays in, because that's usually the more useful finding.
+
+<br/>
+
+<div align="center">
+
+[![GitHub](https://img.shields.io/badge/GitHub-zain--ul--abideen--5036-181717?style=for-the-badge&logo=github)](https://github.com/zain-ul-abideen-5036)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-zain--ul--abideen3-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/zain-ul-abideen3)
+
+<br/>
+
+*If this repository helped you catch a false 98%, a star is the best kind of feedback.*
+
+</div>
