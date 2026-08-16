@@ -11,7 +11,6 @@
 </div>
 
 > A model that's right 98 times out of 100 sounds like the best model in the room. It isn't. It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first.
-</br>
 
 <img src="figures/readme_banner.png" alt="The Accuracy Paradox" width="100%"/>
 
@@ -123,7 +122,7 @@ The complete article, including the math behind why accuracy fails, the full wal
 
 <div align="center">
 
-**[Read "Your Model Has 98% Accuracy and Is Completely Useless" on Medium →](#)**
+**[Read "Your Model Has 98% Accuracy and Is Completely Useless" on Medium →](#https://medium.com/@zainulabideen5/your-model-has-98-accuracy-and-is-completely-useless-c1ca77dc5d8e?sharedUserId=zainulabideen5)**
 
 </div>
 
