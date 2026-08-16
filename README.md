@@ -122,7 +122,7 @@ The complete article, including the math behind why accuracy fails, the full wal
 
 <div align="center">
 
-**[Read "Your Model Has 98% Accuracy and Is Completely Useless" on Medium →](#https://medium.com/@zainulabideen5/your-model-has-98-accuracy-and-is-completely-useless-c1ca77dc5d8e?sharedUserId=zainulabideen5)**
+**[Read "Your Model Has 98% Accuracy and Is Completely Useless" on Medium →](https://medium.com/@zainulabideen5/your-model-has-98-accuracy-and-is-completely-useless-c1ca77dc5d8e?sharedUserId=zainulabideen5)**
 
 </div>
 
