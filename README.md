@@ -2,25 +2,17 @@
 
 <img src="figures/readme_banner.png" alt="The Accuracy Paradox" width="100%"/>
 
-<br/>
-
 [![Read on Medium](https://img.shields.io/badge/Read_the_article-Medium-black?style=for-the-badge&logo=medium)](#)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-</div>
-
-<br/>
-
-<div align="center">
-
-> **A model that's right 98 times out of 100 sounds like the best model in the room. It isn't.**
-> It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first.
+# The Accuracy Paradox
+**A reproducible case study in why accuracy lies on imbalanced data, and what actually catches it.**
 
 </div>
 
-<br/><br/>
+> A model that's right 98 times out of 100 sounds like the best model in the room. It isn't. It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first.
 
 ## Why this exists
 
@@ -28,13 +20,7 @@ Class imbalance is the default condition of most real classification problems: r
 
 This repository is the full, reproducible proof of that claim. A synthetic 98%/2% imbalanced dataset, a baseline model that looks great and does nothing, the confusion matrix that exposes it, and three standard fixes tested honestly enough that one of them makes things worse. Every number in the article traces back to the notebook in this repo. Nothing here is illustrative or hand-picked.
 
----
-
-<br/>
-
 ## The finding, in one table
-
-<div align="center">
 
 | Method | Accuracy | Precision | Recall | F1 |
 |:--|:--:|:--:|:--:|:--:|
@@ -45,10 +31,6 @@ This repository is the full, reproducible proof of that claim. A synthetic 98%/2
 | SMOTE | 0.9812 | 0.7286 | 0.4048 | 0.5204 |
 
 *Every method scores between 97.5% and 98.4% accuracy. Recall and F1 tell a completely different story, and that gap is the entire point of this project.*
-
-</div>
-
-<br/><br/>
 
 ## Repository structure
 
@@ -80,10 +62,6 @@ accuracy-paradox-demo/
         └── eq_f1.png
 ```
 
----
-
-<br/>
-
 ## What's inside the dataset
 
 A synthetic, fully reproducible stand-in for a medical-imaging screening problem, built with `sklearn.datasets.make_classification`:
@@ -96,8 +74,6 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 | Label noise | 1% (`flip_y=0.01`, kept realistic rather than a clean toy split) |
 | Seed | 42, fixed everywhere for exact reproducibility |
 
-<br/><br/>
-
 ## The three fixes, tested honestly
 
 | Fix | What it does | What actually happened here |
@@ -107,11 +83,6 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 | **Threshold tuning** | Moves the decision boundary off the default 0.5 to maximize F1 | The cheapest fix, and the one that won outright on this run |
 
 No result here is presented as the correct outcome to expect on every dataset. The point of showing all three, with the full precision-recall curves and confusion matrices behind them, is that the standard advice ("just use `class_weight='balanced'`") is not guaranteed to help. It has to be checked, not assumed, and this repo shows exactly how to check it.
-
----
-
-
-<br/>
 
 ## Reproduce it
 
@@ -130,8 +101,6 @@ jupyter notebook notebook/imbalance_analysis.ipynb
 Run the notebook top to bottom. Every figure in `figures/` regenerates from scratch, and the printed metrics table will match the one above exactly, since every random process in the pipeline is seeded.
 
 Want to test it on your own data instead of the synthetic set? Replace the `make_classification(...)` cell near the top with your own `X, y`. Everything downstream, the models, the metrics, every figure, adapts automatically to any binary classification problem.
-
-<br/><br/>
 
 ## Read the full write-up
 
@@ -196,4 +165,3 @@ This repository is part of a broader, ongoing body of public research work: repr
 *If this repository helped you catch a false 98%, a star is the best kind of feedback.*
 
 </div>
-
