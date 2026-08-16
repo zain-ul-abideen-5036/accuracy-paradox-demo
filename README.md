@@ -1,24 +1,29 @@
 <div align="center">
-
-<img src="figures/readme_banner.png" alt="The Accuracy Paradox" width="100%"/>
+    
+# The Accuracy Paradox
+**A reproducible case study in why accuracy lies on imbalanced data, and what actually catches it.**
 
 [![Read on Medium](https://img.shields.io/badge/Read_the_article-Medium-black?style=for-the-badge&logo=medium)](#)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-# The Accuracy Paradox
-**A reproducible case study in why accuracy lies on imbalanced data, and what actually catches it.**
-
 </div>
 
 > A model that's right 98 times out of 100 sounds like the best model in the room. It isn't. It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first.
+</br>
+
+<img src="figures/readme_banner.png" alt="The Accuracy Paradox" width="100%"/>
+
+---
 
 ## Why this exists
 
 Class imbalance is the default condition of most real classification problems: rare disease detection, fraud, manufacturing defects, network intrusions, churn. Accuracy, the metric almost everyone reaches for first, actively lies in exactly these settings. It doesn't just underperform, it rewards the laziest possible model with the highest possible score.
 
 This repository is the full, reproducible proof of that claim. A synthetic 98%/2% imbalanced dataset, a baseline model that looks great and does nothing, the confusion matrix that exposes it, and three standard fixes tested honestly enough that one of them makes things worse. Every number in the article traces back to the notebook in this repo. Nothing here is illustrative or hand-picked.
+
+---
 
 ## The finding, in one table
 
@@ -31,6 +36,8 @@ This repository is the full, reproducible proof of that claim. A synthetic 98%/2
 | SMOTE | 0.9812 | 0.7286 | 0.4048 | 0.5204 |
 
 *Every method scores between 97.5% and 98.4% accuracy. Recall and F1 tell a completely different story, and that gap is the entire point of this project.*
+
+---
 
 ## Repository structure
 
@@ -62,6 +69,8 @@ accuracy-paradox-demo/
         └── eq_f1.png
 ```
 
+---
+
 ## What's inside the dataset
 
 A synthetic, fully reproducible stand-in for a medical-imaging screening problem, built with `sklearn.datasets.make_classification`:
@@ -74,6 +83,8 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 | Label noise | 1% (`flip_y=0.01`, kept realistic rather than a clean toy split) |
 | Seed | 42, fixed everywhere for exact reproducibility |
 
+---
+
 ## The three fixes, tested honestly
 
 | Fix | What it does | What actually happened here |
@@ -83,6 +94,8 @@ A synthetic, fully reproducible stand-in for a medical-imaging screening problem
 | **Threshold tuning** | Moves the decision boundary off the default 0.5 to maximize F1 | The cheapest fix, and the one that won outright on this run |
 
 No result here is presented as the correct outcome to expect on every dataset. The point of showing all three, with the full precision-recall curves and confusion matrices behind them, is that the standard advice ("just use `class_weight='balanced'`") is not guaranteed to help. It has to be checked, not assumed, and this repo shows exactly how to check it.
+
+---
 
 ## Reproduce it
 
@@ -102,6 +115,8 @@ Run the notebook top to bottom. Every figure in `figures/` regenerates from scra
 
 Want to test it on your own data instead of the synthetic set? Replace the `make_classification(...)` cell near the top with your own `X, y`. Everything downstream, the models, the metrics, every figure, adapts automatically to any binary classification problem.
 
+---
+
 ## Read the full write-up
 
 The complete article, including the math behind why accuracy fails, the full walkthrough of the confusion matrix, and the checklist for auditing any reported accuracy number, lives in [`article.md`](article.md) in this repo, and is also published on Medium.
@@ -115,23 +130,18 @@ The complete article, including the math behind why accuracy fails, the full wal
 ---
 
 
-<br/>
-
 ## Why this matters beyond this one dataset
 
 This case study is a direct extension of imbalance problems that show up constantly in real diagnostic imaging work: CT-based classification where the disease-positive class is a small minority of scans, and where a model that quietly ignores that minority can still report a deceptively strong headline accuracy. The habit this repo argues for, confusion matrix first, accuracy last, is the same discipline behind catching subject-level data leakage and validation-pipeline leaks before they inflate a reported result anywhere else.
 
-<br/>
+---
 
 ## License
 
 Released under the [MIT License](LICENSE). Use the code freely. If you reference the article or its findings, an attribution back to this repository or the Medium piece is appreciated.
 
-<br/><br/>
-
 ---
 
-<br/>
 
 <div align="center">
 
@@ -140,8 +150,6 @@ Released under the [MIT License](LICENSE). Use the code freely. If you reference
 <img src="https://img.shields.io/badge/Applied_ML-Computer_Vision-1a1a2e?style=flat-square" />
 <img src="https://img.shields.io/badge/Focus-Deep_Learning-1a1a2e?style=flat-square" />
 <img src="https://img.shields.io/badge/Microsoft_Learn-Student_Ambassador_(Gold)-1a1a2e?style=flat-square" />
-
-<br/><br/>
 
 ### Zain Ul Abideen
 
