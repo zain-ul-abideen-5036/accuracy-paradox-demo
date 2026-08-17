@@ -211,8 +211,13 @@ The default classification threshold of 0.5 is a convention, not a law. Since th
 
 On this run, threshold tuning, the cheapest and simplest of the three fixes, outperformed both class weighting and SMOTE on F1. That's not a universal law either; it's what happened on *this* model and *this* data, which is exactly why the honest way to report this is with the full comparison rather than a single winning number.
 
-![Precision-recall curves, all methods compared](figures/fig4_pr_curve_comparison.png)
-**Figure 5.** Precision-recall curves for the baseline, class-weighted, and SMOTE models overlaid, with the threshold-tuned operating point marked separately on the baseline curve. The tuned point sits well above and to the right of the baseline's default threshold, more recall at a comparable precision, for zero retraining cost.
+<p align="center">
+  <img src="figures/fig4_pr_curve_comparison.png" alt="Precision-recall curves, all methods compared" width="500">
+</p>
+
+<p align="center">
+  <strong>Figure 5.</strong> Precision-recall curves for the baseline, class-weighted, and SMOTE models overlaid, with the threshold-tuned operating point marked separately on the baseline curve. The tuned point sits well above and to the right of the baseline's default threshold, more recall at a comparable precision, for zero retraining cost.
+</p>
 
 ![All five methods, every metric](figures/fig6_full_comparison.png)
 **Figure 6.** All five approaches scored on accuracy, precision, recall, and F1 side by side. Accuracy is nearly flat across every bar in the leftmost group of each cluster. Recall and F1 are where the methods actually separate.
