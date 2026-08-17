@@ -226,6 +226,7 @@ On this run, threshold tuning, the cheapest and simplest of the three fixes, out
 <p align="center">
   <strong>Figure 6.</strong> All five approaches scored on accuracy, precision, recall, and F1 side by side. Accuracy is nearly flat across every bar in the leftmost group of each cluster. Recall and F1 are where the methods actually separate.
 </p>
+
 **Table 1.** Full results summary across all five approaches.
 
 | Method | Accuracy | Precision | Recall | F1 |
