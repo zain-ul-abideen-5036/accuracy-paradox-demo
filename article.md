@@ -95,8 +95,13 @@ The dumb "always predict normal" baseline gets 97.5% accuracy and 0% recall. It 
 
 Accuracy collapses four numbers into one and throws away the one that mattered. The confusion matrix keeps all four.
 
-![Confusion matrix, baseline model](figures/fig2_confusion_baseline.png)
-**Figure 2.** Confusion matrix for the baseline, unweighted Random Forest. The top row (actual "normal") is handled almost perfectly. The bottom row (actual "disease") is where the model quietly falls apart.
+<p align="center">
+  <img src="figures/fig2_confusion_baseline.png" alt="Confusion matrix, baseline model" width="500">
+</p>
+
+<p align="center">
+  <strong>Figure 2.</strong> Confusion matrix for the baseline, unweighted Random Forest. The top row (actual "normal") is handled almost perfectly. The bottom row (actual "disease") is where the model quietly falls apart.
+</p>
 
 Read the bottom row. Of 126 actual disease cases in the test set, the model correctly flagged **29** and missed **97**, a 77% miss rate on the exact population the model exists to catch. Meanwhile the top row shows near-perfect performance on the majority class, which is what's actually driving that 98% headline number. The two rows tell completely different stories, and accuracy only reports the average of them, weighted by how many examples are in each row.
 
