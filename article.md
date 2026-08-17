@@ -135,8 +135,13 @@ In medical and other safety-relevant screening contexts, **recall is usually the
 
 But no single threshold-based number, recall included, tells the whole story either, because it depends on where you set the decision threshold. That's what the precision-recall curve is for.
 
-![Precision-recall curve, baseline model](figures/fig3_pr_curve_baseline.png)
-**Figure 3.** Precision-recall curve for the baseline model, with the no-skill line marking the class prevalence (2.52%). Precision holds up reasonably well out to roughly 40 to 50% recall, then collapses. Average precision (AP) summarizes the curve into one number, 0.617 here, but the curve itself shows exactly where the model is strong and where it breaks down.
+<p align="center">
+  <img src="figures/fig3_pr_curve_baseline.png" alt="Precision-recall curve, baseline model" width="500">
+</p>
+
+<p align="center">
+  <strong>Figure 3.</strong> Precision-recall curve for the baseline model, with the no-skill line marking the class prevalence (2.52%). Precision holds up reasonably well out to roughly 40 to 50% recall, then collapses. Average precision (AP) summarizes the curve into one number, 0.617 here, but the curve itself shows exactly where the model is strong and where it breaks down.
+</p>
 
 ```python
 from sklearn.metrics import precision_recall_curve, average_precision_score
