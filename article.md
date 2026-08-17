@@ -2,9 +2,9 @@
 
 # Your Model Has 98% Accuracy and Is Completely Useless
 
-### A model that's right 98 times out of 100 sounds like the best model in the room. It isn't. It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first. This is a full, reproducible teardown of that failure: the exact math behind why accuracy lies, real code and real figures that catch it in the act, and three fixes tested honestly enough that one of them makes things worse.
+A model that's right 98 times out of 100 sounds like the best model in the room. It isn't. It might be the one quietly missing every case that actually mattered, and the only way to know is to stop trusting the one number everyone hands you first. This is a full, reproducible teardown of that failure: the exact math behind why accuracy lies, real code and real figures that catch it in the act, and three fixes tested honestly enough that one of them makes things worse.
 
-*Originally published on [Medium](#). This version is the full technical companion, with every figure, equation, and result reproducible from the notebook in this repository.*
+*Originally published on [Medium](https://medium.com/@zainulabideen5/your-model-has-98-accuracy-and-is-completely-useless-c1ca77dc5d8e?sharedUserId=zainulabideen5). This version is the full technical companion, with every figure, equation, and result reproducible from the notebook in this repository.*
 
 ---
 
@@ -79,8 +79,13 @@ print(recall_score(y_test, preds))     # 0.2302
 
 **98.0% accuracy.** On paper, that's an excellent model. In the confusion matrix, it's a different story.
 
-![Accuracy vs recall bar comparison](figures/fig1_accuracy_vs_recall.png)
-**Figure 1.** Accuracy versus recall for the "always predict normal" baseline and the trained Random Forest. Both post accuracy above 97%. Recall on the disease class tells the real story: the dumb baseline never finds a single case by construction, and the trained model finds barely more than one in five.
+<p align="center">
+  <img src="figures/fig1_accuracy_vs_recall.png" alt="Accuracy versus recall bar comparison" width="500">
+</p>
+
+<p align="center">
+  <strong>Figure 1.</strong> Accuracy versus recall for the "always predict normal" baseline and the trained Random Forest. Both post accuracy above 97%. Recall on the disease class tells the real story: the dumb baseline never finds a single case by construction, and the trained model finds barely more than one in five.
+</p>
 
 The dumb "always predict normal" baseline gets 97.5% accuracy and 0% recall. It never once finds the disease class, by construction. The real, trained Random Forest does only marginally better on the metric that matters: **it catches just 23% of actual disease cases**, while still posting a headline accuracy number less than two points higher than a model that does no work at all. If this were a screening report handed to a stakeholder with only the accuracy line visible, both models would look nearly identical, and both would be failing at their actual job.
 
