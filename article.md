@@ -172,8 +172,13 @@ weighted_clf.fit(X_train, y_train)
 
 `class_weight="balanced"` tells the model to penalize mistakes on the minority class more heavily during training, roughly in proportion to how rare it is. It's the cheapest fix to apply: one keyword argument, no changes to the data.
 
-![Confusion matrix, class-weighted model](figures/fig5_confusion_weighted.png)
-**Figure 4.** Confusion matrix after class weighting. Precision reaches a perfect 100%, but recall on the disease class is now lower than the unweighted baseline, the opposite of what this fix is supposed to do.
+<p align="center">
+  <img src="figures/fig5_confusion_weighted.png" alt="Confusion matrix, class-weighted model" width="500">
+</p>
+
+<p align="center">
+  <strong>Figure 4.</strong> Confusion matrix after class weighting. Precision reaches a perfect 100%, but recall on the disease class is now lower than the unweighted baseline, the opposite of what this fix is supposed to do.
+</p>
 
 Result: **recall actually dropped**, from 23.0% to 11.1%, while precision went to a perfect 100%. On this dataset, with this model, class weighting made the model *more* conservative about flagging the disease class, not less. This is a real and known failure mode with bagged tree ensembles like Random Forest: because each tree is fit on a bootstrap resample, the class-weight adjustment interacts with the resampling in ways that don't always produce the intended effect, and can be dominated by how the trees are already structured. It's a useful reminder that "the standard fix" is not guaranteed to fix anything on a given model and dataset. It has to be checked, not assumed.
 
