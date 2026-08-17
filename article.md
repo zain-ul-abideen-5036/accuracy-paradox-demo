@@ -229,6 +229,7 @@ On this run, threshold tuning, the cheapest and simplest of the three fixes, out
 
 <p align="center"><strong>Table 1.</strong> Full results summary across all five approaches.</p>
 
+<div align="center">
 
 | Method | Accuracy | Precision | Recall | F1 |
 |:--|:--:|:--:|:--:|:--:|
@@ -237,6 +238,8 @@ On this run, threshold tuning, the cheapest and simplest of the three fixes, out
 | **Threshold tuned** | 0.9842 | 0.7474 | 0.5635 | **0.6425** |
 | Class weighted | 0.9776 | 1.0000 | 0.1111 | 0.2000 |
 | SMOTE | 0.9812 | 0.7286 | 0.4048 | 0.5204 |
+
+</div>
 
 Notice the accuracy column: every single method scores between 97.5% and 98.4%. **Accuracy barely moves no matter what you do**, because the majority class overwhelms it regardless of how well the model handles the minority class. It is precision, recall, and F1, not accuracy, that reveal these five models are, in practice, very different products.
 
