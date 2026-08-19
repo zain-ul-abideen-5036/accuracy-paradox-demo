@@ -3,7 +3,7 @@
 # The Accuracy Paradox
 **A reproducible case study in why accuracy lies on imbalanced data, and what actually catches it.**
 
-[![Read on Medium](https://img.shields.io/badge/Read_the_article-Medium-black?style=for-the-badge&logo=medium)](#)
+[![Read on Medium](https://img.shields.io/badge/Read_the_article-Medium-black?style=for-the-badge&logo=medium)](https://medium.com/@zainulabideen5/your-model-has-98-accuracy-and-is-completely-useless-c1ca77dc5d8e?sharedUserId=zainulabideen5)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
